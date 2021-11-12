@@ -2,20 +2,21 @@ node {
     
     def mvnHome = tool 'Maven3'
     
-    stage ('Checkout') {    
-        checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/balajirajmohan/eeapp.git']]])   
-    
-    }
+   stage('Cloning our Git') {
+steps {
+git 'https://github.com/balajirajmohan/eeapp.git'
+}
+}
     
     stage ('build')  {
-        sh "${mvnHome}/bin/mvn package -f springapp/pom.xml"
+        sh "${mvnHome}/bin/mvn package -f MyAwesomeApp/pom.xml"
     } 
     
     stage ('Docker Build') {
      // Build and push image with Jenkins' docker-plugin
     withDockerServer([uri: "tcp://localhost:4243"]) {
         withDockerRegistry([credentialsId: "dockerhub", url: "https://index.docker.io/v1/"]) {
-        image = docker.build("balajirajmohanbr/myspringbootapp", "springapp")
+        image = docker.build("ananthkannan/myspringbootapp", "MyAwesomeApp")
         image.push()    
         }
       }
@@ -23,13 +24,14 @@ node {
     
     stage ('Kubernetes Deploy') {
         kubernetesDeploy(
-            configs: 'spring/springBootDeploy.yml',
+            configs: 'MyAwesomeApp/springBootDeploy.yml',
             kubeconfigId: 'K8S',
             enableConfigSubstitution: true
             )
     }
     /*
         stage ('Kubernetes Deploy using Kubectl') {
-          sh "kubectl apply -f springapp/springBootDeploy.yml"
+          sh "kubectl apply -f MyAwesomeApp/springBootDeploy.yml"
     }*/
 }
+
