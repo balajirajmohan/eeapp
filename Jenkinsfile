@@ -26,7 +26,7 @@ git 'https://github.com/balajirajmohan/eeapp.git'
 		withCredentials([
 			usernamePassword(credentialsId: "AWS_CREDENTIALS", usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY')
 		]) {
-			echo "NODE_NAME = $NODE_NAME
+			echo "NODE_NAME = $NODE_NAME"
 			sh """
 				export AWS_DEFAULT_REGION=eu-west-1
                 aws ssm send-command --targets \"Key=tag:Name,Values=\"application-server\"\" \
