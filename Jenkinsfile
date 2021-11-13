@@ -24,7 +24,7 @@ git 'https://github.com/balajirajmohan/eeapp.git'
 	
 	stage ('Deploy application') {
 		withCredentials([
-			usernamePassword(credentialsId: AWS_CREDENTIALS, usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY')
+			usernamePassword(credentialsId: "AWS_CREDENTIALS", usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY')
 		]) {
 			echo "NODE_NAME = $NODE_NAME
 			sh """
