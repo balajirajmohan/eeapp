@@ -1,7 +1,6 @@
 pipeline {
-    agent any
 
-    def mvnHome = tool 'Maven3'
+    stages {
 
    stage('Cloning our Git') {
 steps {
@@ -25,9 +24,9 @@ git 'https://github.com/balajirajmohan/eeapp.git'
 	
 	stage ('Deploy application') {
 		withCredentials([
-			usernamePassword(credentialsId: "AWS_CREDENTIALS", usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY')
+			usernamePassword(credentialsId: AWS_CREDENTIALS, usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY')
 		]) {
-			echo "NODE_NAME = $NODE_NAME"
+			echo "NODE_NAME = $NODE_NAME
 			sh """
 				export AWS_DEFAULT_REGION=eu-west-1
                 aws ssm send-command --targets \"Key=tag:Name,Values=\"application-server\"\" \
@@ -35,6 +34,6 @@ git 'https://github.com/balajirajmohan/eeapp.git'
                 --parameters commands=\"docker run -d -p 8080:8080 balajirajmohanbr/spring\"
 			"""
 		}
+		}
 	}
 }
-
