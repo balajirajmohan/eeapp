@@ -1,4 +1,5 @@
-node {
+pipeline {
+    agent any
 
     def mvnHome = tool 'Maven3'
 
