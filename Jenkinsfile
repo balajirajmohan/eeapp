@@ -1,5 +1,7 @@
 #!groovy
 
+def mvnHome = tool 'Maven3'
+
 pipeline {
     agent any
 
