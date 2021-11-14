@@ -20,7 +20,7 @@ pipeline {
                     def mvnHome = tool name: "maven-3.5.2", type: "maven"
                     sh """
                         ls -l
-                        ${mvnHome}/bin/mvn package -f eeapp/pom.xml
+                        ${mvnHome}/bin/mvn package -f pom.xml
                     """
                 }
             }
