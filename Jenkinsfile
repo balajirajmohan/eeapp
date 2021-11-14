@@ -47,9 +47,9 @@ pipeline {
                 script {
                     echo "NODE_NAME = $NODE_NAME"
                     sh """ 
-                        sudo docker login -u "$DOCKER_CREDS_USR" -p "$DOCKER_CREDS_PSW"
-                        sudo docker build -t balajirajmohanbr/spring .
-                        sudo docker push balajirajmohanbr/spring
+                        docker login -u "$DOCKER_CREDS_USR" -p "$DOCKER_CREDS_PSW"
+                        docker build -t balajirajmohanbr/spring .
+                        docker push balajirajmohanbr/spring
                     """
                 }
             }
