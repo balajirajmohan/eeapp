@@ -3,8 +3,6 @@
 pipeline {
     agent any
 
-    def mvnHome = tool 'Maven3'
-
     stages {
         stage ('Code checkout from scm') {
             steps {
@@ -19,6 +17,7 @@ pipeline {
             steps {
                 script {
                     echo "NODE_NAME = $NODE_NAME"
+                    def mvnHome = tool name: "maven-3.5.2", type: "maven"
                     sh """
                         ${mvnHome}/bin/mvn package -f eeapp/pom.xml
                     """
