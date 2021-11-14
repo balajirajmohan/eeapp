@@ -64,7 +64,7 @@ pipeline {
                         echo "NODE_NAME = $NODE_NAME"
 			            sh """
 				            export AWS_DEFAULT_REGION=eu-west-1
-                            aws ssm send-command --targets \"Key=tag:Name,Values=\"application-server\"\" \
+                            aws ssm send-command --targets \"Key=tag:Name,Values=\"app-server\"\" \
                             --document-name AWS-RunShellScript \
                             --parameters commands=\"docker run -d -p 8080:8080 balajirajmohanbr/spring\"
 			            """
