@@ -44,9 +44,12 @@ pipeline {
             steps {
                 script {
                     echo "NODE_NAME = $NODE_NAME"
-                    docker login -u "$DOCKER_CREDS_USR" -p "$DOCKER_CREDS_PSW"
-                    docker build -t balajirajmohanbr/spring
-                    docker push balajirajmohanbr/spring
+                    sh """
+                        cd eeapp/ 
+                        docker login -u "$DOCKER_CREDS_USR" -p "$DOCKER_CREDS_PSW"
+                        docker build -t balajirajmohanbr/spring .
+                        docker push balajirajmohanbr/spring
+                    """
                 }
             }
         }
