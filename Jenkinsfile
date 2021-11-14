@@ -1,9 +1,9 @@
 #!groovy
 
-def mvnHome = tool 'Maven3'
-
 pipeline {
     agent any
+
+    def mvnHome = tool 'Maven3'
 
     stages {
         stage ('Code checkout from scm') {
