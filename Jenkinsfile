@@ -24,15 +24,29 @@ pipeline {
             }
         }
 
+        // stage ('Docker image build and push') {
+        //     steps {
+        //         withDockerServer([uri: "tcp://localhost:4243"]) {
+        //             withDockerRegistry([credentialsId: "dockerhub", url: "https://index.docker.io/v1/"]) {
+        //                 script {
+        //                     image = docker.build("balajirajmohanbr/spring", "eeapp")
+        //                     image.push()
+        //                 }
+        //             }
+        //         }
+        //     }
+        // }
+
         stage ('Docker image build and push') {
+            environment {
+                DOCKER_CREDS = credentials('dockerhub')
+            }
             steps {
-                withDockerServer([uri: "tcp://localhost:4243"]) {
-                    withDockerRegistry([credentialsId: "dockerhub", url: "https://index.docker.io/v1/"]) {
-                        script {
-                            image = docker.build("balajirajmohanbr/spring", "eeapp")
-                            image.push()
-                        }
-                    }
+                script {
+                    echo "NODE_NAME = $NODE_NAME"
+                    docker login -u "$DOCKER_CREDS_USR" -p "$DOCKER_CREDS_PSW"
+                    docker build -t balajirajmohanbr/spring
+                    docker push balajirajmohanbr/spring
                 }
             }
         }
@@ -40,7 +54,7 @@ pipeline {
         stage ('Deploy application') {
             steps {
                 withCredentials([
-			        usernamePassword(credentialsId: AWS_CREDENTIALS, usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY')
+			        usernamePassword(credentialsId: "AWS_CREDENTIALS", usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY')
 		        ]) {
                     script {
                         echo "NODE_NAME = $NODE_NAME"
